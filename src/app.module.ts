@@ -1,6 +1,9 @@
 import * as angular from 'angular';
+import * as template from './app.module.html'
 
-export const AppModule = angular.module('app',[])
-  .controller('widthController', function($scope) {
-    $scope.message="Hello Angular";
+export const AppModule = angular.module('app', [])
+  .component('appModule', { template,
+    controller: function () {
+      this.message = 'world';
+    }
   });

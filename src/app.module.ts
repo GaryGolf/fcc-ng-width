@@ -1,9 +1,16 @@
 import * as angular from 'angular';
-import * as template from './app.module.html'
 
 export const AppModule = angular.module('app', [])
-  .component('appModule', { template,
+  .component('appModule', { 
+    template: `
+      <div ng-click="$ctrl.onClick()">
+        Hello {{$ctrl.message}}
+      </div>
+    `,
     controller: function MainModuleController() {
       this.message = 'world';
+      this.onClick = function(e) {
+        console.log('click', e)
+      }
     }
   });

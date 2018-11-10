@@ -3,7 +3,7 @@ import * as template from './app.module.html'
 
 export const AppModule = angular.module('app', [])
   .component('appModule', { template,
-    controller: function () {
+    controller: function MainModuleController() {
       this.message = 'world';
     }
   });

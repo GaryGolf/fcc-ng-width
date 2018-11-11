@@ -3,7 +3,7 @@ import * as angular from 'angular';
 export const AppModule = angular.module('app', [])
   .component('appModule', { 
     template: `
-      <div ng-click="$ctrl.onClick()">
+      <div data-ng-click="$ctrl.onClick()">
         Hello {{$ctrl.message}}
       </div>
     `,

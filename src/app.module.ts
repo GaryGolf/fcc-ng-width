@@ -1,21 +1,21 @@
 import * as angular from 'angular';
 import dimension from './dimension.component';
 
-export const AppModule = angular.module('app', [])
-  .component('dimension', dimension)
+export const AppModule:angular.IModule = angular.module('app',[])
+  .component({ dimension })
   .component('appModule', { 
+    controller: [ '$scope', function ($scope) {
+      this.dimension = 'auto';
+     
+    }],
+    controllerAs: 'vm',
     template: `
-      <div data-ng-click="$ctrl.onClick()">
-        Hello {{$ctrl.message}}
-        <dimension/>
-      </div>
-    `,
-    controller: function MainModuleController() {
-      this.message = 'world';
-      this.onClick = function(e) {
-        console.log('click', e)
-      }
-    }
+    <div>
+      <dimension 
+        data-ng-model="vm.dimension"
+      />
+      <div>{{vm.dimension}}</div>
+    </div>
+    `
   });
-  
   

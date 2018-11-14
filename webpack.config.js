@@ -1,6 +1,6 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 
 
@@ -17,7 +17,19 @@ const devConfig = {
   module: {
     rules: [
       { test: /\.ts$/, loader: 'ts-loader', exclude: /node_modules/ },
-      { test: /\.css$/, use: ['style-loader','css-loader'], exclude: /node_modules/ },
+      { test: /\.css$/, 
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: {
+            loader: 'css-loader',
+            query: {
+              modules: true,
+              sourceMap: false,
+              importLoaders: 1,
+              localIdentName: '[local]__[hash:base64:5]'
+            }
+          }
+      })},
       { test: /\.html$/, loader: 'html-loader' }
     ]
   },
@@ -25,6 +37,7 @@ const devConfig = {
     extensions: ['.ts', '.tsx', '.js', '.vue']
   },
   plugins: [
+    new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({ template: path.resolve(__dirname, './template.html') })
   ]
 }

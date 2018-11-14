@@ -10,7 +10,7 @@ export const AppModule:angular.IModule = angular.module('app',[])
     controllerAs: 'vm',
     template: `
     <div>
-      <div>{{vm.value}}</div>
+      <div>ng-model: {{vm.value}}</div>
       <dimension 
         data-menu-items="['px', '%', 'em', 'rem', '-', 'auto']"
         data-ng-model="vm.value"

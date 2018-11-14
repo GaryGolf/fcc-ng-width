@@ -7,7 +7,7 @@ export const dimension:angular.IComponentOptions = {
   },
   require: { ngModelCtrl: 'ngModel' },
   controller: [ '$scope', function ($scope) {
-    this.options = ['-', 'px', 'em', 'auto'];
+    this.options = ['-', 'px', 'em', 'auto', '%'];
     this.state = { value: 0, prefix: 'auto' };
 
     this.$onInit = () => {
@@ -16,8 +16,8 @@ export const dimension:angular.IComponentOptions = {
 
     this.onInputChange = () => {
       const { value, prefix } = this.state;
-      if(!!value) {
-        if(prefix == "-" || prefix == 'auto') this.state.prefix = 'px';
+      if(!!value && (prefix == "-" || prefix == 'auto')) { 
+          this.state.prefix = 'px';
       }
       this.ngModel = this.state.value + this.state.prefix;
       this.ngModelCtrl.$setViewValue(this.ngModel);
@@ -43,12 +43,11 @@ export const dimension:angular.IComponentOptions = {
 
     this.parseState = value => {
 
-      if (value == 'auto') return { value: '', prefix: 'auto' };
-
       const v = parseFloat(value);
       const p = value.split(/\d|[.]/i).pop().trim();
+      const isExist = this.options.includes(p);
 
-      // check this.options.includes(p)
+      if (!isExist || value == 'auto' ) return { value: '', prefix: 'auto' };
 
       if(!p || !v) return { value: 0, prefix: '-' };
 
@@ -76,5 +75,4 @@ export const dimension:angular.IComponentOptions = {
       </select>
     </div>
   `
-
 };

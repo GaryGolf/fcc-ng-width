@@ -5,7 +5,7 @@ export const AppModule:angular.IModule = angular.module('app',[])
   .component({ dimension })
   .component('appModule', { 
     controller: [ function () {
-      this.value = '12rem'; // initial value
+      this.value = '100%'; // initial value
     }],
     controllerAs: 'vm',
     template: `

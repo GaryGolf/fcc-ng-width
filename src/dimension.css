@@ -1,4 +1,28 @@
 .dimension {
   margin: 20px;
+  border: 1px solid silver;
+  border-radius: 5px;
+  display: inline-block;
+}
+.dimension > select {
+  -webkit-appearance: none;
+  appearance: none;
   line-height: 2rem;
+  text-align: right;
+  padding: 1px 10px;
+  border: none;
+  border-left: 1px solid silver;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.dimension > input {
+  -webkit-appearance: none;
+  appearance: none;
+  line-height: 2rem;
+  border: 1px solid silver;
+  text-align: right;
+  border: none;
+  border-radius: 5px;
+  width: 60px;
 }

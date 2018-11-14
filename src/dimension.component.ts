@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import * as styles from './dimension.css';
 
 
 export const dimension:angular.IComponentOptions = {
@@ -56,7 +57,7 @@ export const dimension:angular.IComponentOptions = {
   }],
   controllerAs: 'vm',
   template: `
-    <div>
+    <div class="${styles.dimension}">
       <input 
         type="number" 
         data-ng-model="vm.state.value" 

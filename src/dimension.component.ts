@@ -1,18 +1,17 @@
 import * as angular from 'angular';
 
 
-const dimension:angular.IComponentOptions = {
+export const dimension:angular.IComponentOptions = {
   bindings: {
-    ngModel: '='
+    ngModel: '<'
   },
+  require: { ngModelCtrl: 'ngModel' },
   controller: [ '$scope', function ($scope) {
     this.options = ['-', 'px', 'em', 'auto'];
     this.state = { value: 0, prefix: 'auto' };
 
     this.$onInit = () => {
-      const v = this.parseState('12.rem')
-      console.log('init', v)
-
+      this.state = this.parseState(this.ngModel);
     }
 
     this.onInputChange = () => {
@@ -21,6 +20,7 @@ const dimension:angular.IComponentOptions = {
         if(prefix == "-" || prefix == 'auto') this.state.prefix = 'px';
       }
       this.ngModel = this.state.value + this.state.prefix;
+      this.ngModelCtrl.$setViewValue(this.ngModel);
     }
 
     this.onSelectChange = () => {
@@ -29,24 +29,30 @@ const dimension:angular.IComponentOptions = {
         case '-' :
           this.state.value = 0;
           this.ngModel = 0;
-          return;
+          break;
         case 'auto' :
           this.state.value = '';
+          this.ngModel = prefix;
           break;
         default :
           if (value == '') this.state.value = 0;
+          this.ngModel = this.state.value + prefix;
       }
-      this.ngModel = this.state.value + this.state.prefix;
+      this.ngModelCtrl.$setViewValue(this.ngModel);
     }
 
     this.parseState = value => {
 
       if (value == 'auto') return { value: '', prefix: 'auto' };
-      else if ( value == 0 ) return { value: 0, prefix: '-' };
 
-      const p = value.split(/\d|[.]/i).pop().trim();
       const v = parseFloat(value);
-      if(!p || !v) return { value: 0, prefix: '-' }
+      const p = value.split(/\d|[.]/i).pop().trim();
+
+      // check this.options.includes(p)
+
+      if(!p || !v) return { value: 0, prefix: '-' };
+
+      return { value: v, prefix: p };
     }
   }],
   controllerAs: 'vm',
@@ -72,5 +78,3 @@ const dimension:angular.IComponentOptions = {
   `
 
 };
-
-export default dimension;

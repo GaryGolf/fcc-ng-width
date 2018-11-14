@@ -1,15 +1,17 @@
 .dimension {
   margin: 20px;
   border: 1px solid silver;
-  border-radius: 5px;
+  border-radius: 3px;
   display: inline-block;
 }
 .dimension > select {
-  -webkit-appearance: none;
+  position: relative;
   appearance: none;
+  -webkit-appearance: none;
   line-height: 2rem;
   text-align: right;
-  padding: 1px 10px;
+  padding: 1px;
+  padding-left: 10px;
   border: none;
   border-left: 1px solid silver;
   border-top-left-radius: 0;

@@ -69,7 +69,7 @@ export const dimension:angular.IComponentOptions = {
       const p = value.split(/\d|[.]/i).pop().trim();
       const isExist = this.options.includes(p);
 
-      if (!isExist || value == 'auto' ) return { value: '', prefix: 'auto' };
+      if (!isExist || value == 'auto' ) return { value: 'auto', prefix: '-' };
 
       if(!p || !v) return { value: 0, prefix: '-' };
 

@@ -12,6 +12,7 @@ export const AppModule:angular.IModule = angular.module('app',[])
     <div>
       <div>{{vm.value}}</div>
       <dimension 
+        data-menu-items="['px', '%', 'em', 'rem', '-', 'auto']"
         data-ng-model="vm.value"
       ></dimension>
     </div>

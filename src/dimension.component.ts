@@ -4,24 +4,24 @@ import * as styles from './dimension.css';
 
 export const dimension:angular.IComponentOptions = {
   bindings: {
-    ngModel: '<'
+    ngModel: '<',
+    menuItems: '<'
   },
   require: { ngModelCtrl: 'ngModel' },
   controller: [ '$scope', function ($scope) {
-    this.options = ['-', 'px', 'em', 'auto', '%'];
+    this.options = ['-', 'auto', 'px', '%'];
+    this.savedValue = '';
     this.state = { value: 0, prefix: 'auto' };
 
     this.$onInit = () => {
       this.state = this.parseState(this.ngModel);
-    }
-
-    this.onInputChange = () => {
-      const { value, prefix } = this.state;
-      if(!!value && (prefix == "-" || prefix == 'auto')) { 
-          this.state.prefix = 'px';
+      this.savedValue = this.state.value;
+      if(this.menuItems) {
+        this.options = this.menuItems;
+        ['px', '-', 'auto'].forEach(v => {
+          if(!this.options.includes(v)) this.options.push(v)
+        })
       }
-      this.ngModel = this.state.value + this.state.prefix;
-      this.ngModelCtrl.$setViewValue(this.ngModel);
     }
 
     this.onSelectChange = () => {
@@ -32,13 +32,34 @@ export const dimension:angular.IComponentOptions = {
           this.ngModel = 0;
           break;
         case 'auto' :
-          this.state.value = '';
-          this.ngModel = prefix;
+          this.state.value = 'auto';
+          this.state.prefix = '-'
+          this.ngModel = 'auto';
           break;
         default :
-          if (value == '') this.state.value = 0;
+          if (isNaN(value)) this.state.value = 0;
           this.ngModel = this.state.value + prefix;
       }
+      this.ngModelCtrl.$setViewValue(this.ngModel);
+    }
+
+    this.onInputChange = () => {
+      const { value, prefix } = this.state;
+      const validate = s => s.match(/^[0-9]*\.?[0-9]*$/);
+
+      if (value == 'auto') {
+        this.state.value = 0;
+        this.state.prefix = 'px';
+        this.savedValue = 0;
+      } else if (!validate(value)) {
+        this.state.value = this.savedValue;
+      } else {
+        this.savedValue = value;
+      }
+
+      if(prefix == '-') this.state.prefix = 'px';
+
+      this.ngModel = this.state.value + this.state.prefix;
       this.ngModelCtrl.$setViewValue(this.ngModel);
     }
 
@@ -59,9 +80,10 @@ export const dimension:angular.IComponentOptions = {
   template: `
     <div class="${styles.dimension}">
       <input 
-        type="number" 
+        type="text" 
         data-ng-model="vm.state.value" 
         data-ng-change="vm.onInputChange()"
+        data-ng-value="vm.state.value"
       />
       <select 
         data-ng-model="vm.state.prefix"

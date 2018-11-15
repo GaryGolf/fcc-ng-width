@@ -13,10 +13,10 @@ export const AppModule:angular.IModule = angular.module('app', [])
       <input type="text" data-ng-model="vm.value" />
       <hr/>
       <dimension 
-        data-menu-items="['px', '%', 'em', 'rem', '-', 'auto']"
+        data-menu-items="['px', '%', 'em', 'rem']"
         data-ng-model="vm.value"
       ></dimension>
-    </div>
-    `
+      </div>
+      `
   });
   

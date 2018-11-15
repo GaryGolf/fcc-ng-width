@@ -14,7 +14,7 @@ export class DimensionController implements IController {
   private ngModelCtrl: INgModelController;
   private menuItems: string[];
 
-  $onInit = () => {
+  $onInit() {
     this.ngModelCtrl.$render = this.onPropsChange;
     if(this.menuItems) {
       this.options = this.menuItems;
@@ -69,6 +69,24 @@ export class DimensionController implements IController {
     if(prefix == '-') this.state.prefix = 'px';
 
     this.ngModelCtrl.$setViewValue(this.state.value + this.state.prefix);
+  }
+
+  private isValid = (value: string): boolean => {
+    const spcUnits = ['0', 'auto'];
+    const lenUnits = ['%', 'px', 'cm', 'mm', 'in', 'pc', 'pt', 'ch', 'em', 'ex', 'rem', 'vh', 
+    'vw', 'vmin', 'vmax'];
+    const val = parseFloat(value);
+    const prf = value.split(/\d|[.]/i).pop().trim();
+
+    if(
+      spcUnits.includes(value) ||       // '0' or 'auto'
+      /^\d|\.\d/.test(value) &&         // leading number or comma
+      /\D$/.test(value) &&              // trailing symbol is not a number
+      value.split('.').length < 3 &&    // has only one comma
+      !isNaN(val) &&                    // is a number
+      lenUnits.includes(prf)            // matches prefix
+    ) return true;
+    return false;
   }
 
 

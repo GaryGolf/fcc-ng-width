@@ -16,6 +16,7 @@
   border-left: 1px solid silver;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  outline: none;
 }
 
 .dimension > input {
@@ -27,4 +28,5 @@
   border: none;
   border-radius: 5px;
   width: 60px;
+  outline: none;
 }

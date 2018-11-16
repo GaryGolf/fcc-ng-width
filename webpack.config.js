@@ -7,7 +7,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const devConfig = {
   mode: 'development',
   entry: path.resolve(__dirname, './src/index.ts'),
-  output: { filename: 'dist/index.js' },
+  output: { filename: 'bundle.js' },
   devtool: 'inline-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),

@@ -86,7 +86,7 @@ export class DimensionController implements IController {
   }
 
 
-  private setState = ({value, prefix}:State) => {
+  private setState ({value, prefix}:State) {
     this.resetOptions();
     if (!this.options.includes(prefix)) this.options.push(prefix);
     this.state = { value, prefix };

@@ -26,7 +26,7 @@ export class DimensionController implements IController {
   }
 
 
-  private onSelectChange = () => {
+  private onSelectChange() {
     const { value, prefix } = this.state;
 
     switch(prefix) {
@@ -40,7 +40,7 @@ export class DimensionController implements IController {
   }
 
 
-  private onInputChange = () => {
+  private onInputChange() {
     const { value, prefix } = this.state;
 
     if (this.isValid(value)) this.renderState(value);
@@ -48,7 +48,7 @@ export class DimensionController implements IController {
   }
 
 
-  private isValid = (value: string): boolean => {
+  private isValid(value: string): boolean {
 
     if(!value) return false;
     const lenUnits = ['%', 'px', 'cm', 'mm', 'in', 'pc', 'pt', 'ch', 'em', 'ex', 'rem', 'vh', 
@@ -61,7 +61,7 @@ export class DimensionController implements IController {
     return !isNaN(Number(num)) && lenUnits.includes(suf);
   }
 
-  private parseState = (value:string):State => {
+  private parseState(value:string):State {
 
     const v = '' + parseFloat(value);
     const p = value.split(/\d|[.]/i).pop().trim();
@@ -73,7 +73,7 @@ export class DimensionController implements IController {
   }
 
 
-  private renderState = (val?:string) => {
+  private renderState(val?:string) {
 
     if (!!val) {
       const state = this.parseState(val);

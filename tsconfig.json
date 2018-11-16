@@ -4,6 +4,7 @@
     "module": "commonjs",
     "target": "es5",
     "baseUrl": "./src",
+    "inlineSourceMap": true,
     "lib": ["esnext", "dom"],
     "experimentalDecorators": true
   },

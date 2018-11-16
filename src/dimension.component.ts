@@ -8,33 +8,20 @@ interface State {
 
 export class DimensionController implements IController {
   
-  private options: string[] = ['-', 'auto', 'px', '%'];
+  private defaultOptions = ['auto', 'px', '%'];
+  private options: string[];
   private state: State;
   private ngModelCtrl: INgModelController;
   private menuItems: string[];
 
   $onInit() {
     this.ngModelCtrl.$render = this.onPropsChange;
-    if(this.menuItems) {
-      this.options = [...this.menuItems];
-      ['auto', '-'].forEach(v => {
-        if(!this.options.includes(v)) this.options.unshift(v);
-      });
-    }
-
-    this.split('123rem123');
-    this.split('123rem123pt')
-    this.split('.3rem')
-    this.split('0.3rem')
+    this.resetOptions();
   }
-
-  private split = v => {
-   console.log(v, v.split(/\d+/).filter(q => !['','.'].includes(q)))
-  }
-
 
   private onPropsChange = () => {
-    this.state = this.parseState(this.ngModelCtrl.$viewValue);
+    const state = this.parseState(this.ngModelCtrl.$viewValue);
+    this.setState(state);
   }
 
 
@@ -42,20 +29,12 @@ export class DimensionController implements IController {
     const { value, prefix } = this.state;
 
     switch(prefix) {
-      case '-':
-        this.state = { value: '0', prefix: '-' };
-        this.ngModelCtrl.$setViewValue('0');
-        return;
       case 'auto':
-        this.state = { value: 'auto', prefix: '-' };
-        this.ngModelCtrl.$setViewValue('auto');
-        return;
+        this.renderState('auto');
+        break;
       default: 
         const val = value != 'auto' ? value + prefix : '0' + prefix;
-        this.state = this.parseState(val);
-        const output = this.state.value + this.state.prefix;
-        this.ngModelCtrl.$setViewValue(output);
-        return;
+        this.renderState(val);
     }
   }
 
@@ -63,18 +42,10 @@ export class DimensionController implements IController {
   private onInputChange = () => {
     const { value, prefix } = this.state;
 
-    if (this.isValid(value)) {
-
-      const state:State = this.parseState(value);
-      if (this.options.includes(state.prefix)) this.state = state;
-      else this.state.prefix = '-';
-        
-      this.ngModelCtrl.$setViewValue(value);
-      
-    } else if(this.isValid(value + prefix)) {
-      this.ngModelCtrl.$setViewValue(value + prefix);
-    } 
+    if (this.isValid(value)) this.renderState(value);
+    else if(this.isValid(value + prefix)) this.renderState();
   }
+
 
   private isValid = (value: string): boolean => {
 
@@ -86,7 +57,7 @@ export class DimensionController implements IController {
     const hasNoDoubles = value.split(/\d+/).filter(v => !['','.'].includes(v)).length < 2;
 
     if(
-      ['0', 'auto'].includes(value) ||  // '0' or 'auto'
+      ['auto'].includes(value) ||       // auto' or ..
       /^\d|\.\d/.test(value) &&         // leading number or comma
       /\D$/.test(value) &&              // trailing symbol is not a number
       value.split('.').length < 3 &&    // has only one comma
@@ -102,12 +73,36 @@ export class DimensionController implements IController {
     const v = '' + parseFloat(value);
     const p = value.split(/\d|[.]/i).pop().trim();
     const isValid = this.isValid(value);
-    const isExist = this.options.includes(p);
 
     if (value == 'auto') return { value, prefix: '-' };
-    else if (isValid && isExist) return { value: v, prefix: p };
-    else if(isValid) return { value, prefix: '-' };
-    else return { value: '0', prefix: '-' };
+    if (isValid) return { value: v, prefix: p };
+    return { value: '0', prefix: 'px' };
+  }
+
+
+  private renderState = (val?:string) => {
+
+    if (!!val) {
+      const state = this.parseState(val);
+      this.setState(state);
+    }
+
+    const { value, prefix } = this.state;
+    const output = prefix != '-' ? value + prefix : value;
+    this.ngModelCtrl.$setViewValue(output);
+  }
+
+
+  private setState = ({value, prefix}:State) => {
+    this.resetOptions();
+    if (!this.options.includes(prefix)) this.options.push(prefix);
+    this.state = { value, prefix };
+  }
+
+
+  private resetOptions = () => {
+    this.options = !this.menuItems ? [...this.defaultOptions] : [...this.menuItems];
+    if(!this.options.includes('auto')) this.options.unshift('auto');
   }
 
 }

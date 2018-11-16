@@ -102,7 +102,7 @@ export class DimensionController implements IController {
 
   private resetOptions = () => {
     this.options = !this.menuItems ? [...this.defaultOptions] : [...this.menuItems];
-    if(!this.options.includes('auto')) this.options.unshift('auto');
+    // if(!this.options.includes('auto')) this.options.unshift('auto');
   }
 
 }

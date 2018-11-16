@@ -19,6 +19,7 @@ export class DimensionController implements IController {
     this.resetOptions();
   }
 
+
   private onPropsChange = () => {
     const state = this.parseState(this.ngModelCtrl.$viewValue);
     this.setState(state);
@@ -51,21 +52,13 @@ export class DimensionController implements IController {
 
     if(!value) return false;
     const lenUnits = ['%', 'px', 'cm', 'mm', 'in', 'pc', 'pt', 'ch', 'em', 'ex', 'rem', 'vh', 
-    'vw', 'vmin', 'vmax'];
-    const val = parseFloat(value);
-    const prf = value.split(/\d|[.]/i).pop().trim();
-    const hasNoDoubles = value.split(/\d+/).filter(v => !['','.'].includes(v)).length < 2;
+      'vw', 'vmin', 'vmax'];
 
-    if(
-      ['auto'].includes(value) ||       // auto' or ..
-      /^\d|\.\d/.test(value) &&         // leading number or comma
-      /\D$/.test(value) &&              // trailing symbol is not a number
-      value.split('.').length < 3 &&    // has only one comma
-      !isNaN(val) &&                    // is a number
-      lenUnits.includes(prf) &&         // matches prefix
-      hasNoDoubles                      // remove double value
-    ) return true;
-    return false;
+    const num = value.replace(/\D*$/,'');
+    const suf = value.replace(/[0-9.-]/g, '');
+
+    if (suf == 'auto') return true;
+    return !isNaN(Number(num)) && lenUnits.includes(suf);
   }
 
   private parseState = (value:string):State => {

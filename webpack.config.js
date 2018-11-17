@@ -1,13 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 
 const devConfig = {
   mode: 'development',
   entry: path.resolve(__dirname, './src/index.ts'),
-  output: { filename: 'bundle.js' },
+  output: { 
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
   devtool: 'inline-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
@@ -36,9 +38,11 @@ const devConfig = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.vue']
   },
+  externals: { 'angular': 'angular' },
   plugins: [
     new ExtractTextPlugin('styles.css'),
-    new HtmlWebpackPlugin({ template: path.resolve(__dirname, './template.html') })
+    new HtmlWebpackPlugin({ template: path.resolve(__dirname, './template.html') }),
+    new HtmlWebpackExternalsPlugin({ externals: [{ module: 'angular', entry: 'angular.js' }] })
   ]
 }
 

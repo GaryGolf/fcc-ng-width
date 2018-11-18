@@ -19,19 +19,7 @@ const devConfig = {
   module: {
     rules: [
       { test: /\.ts$/, loader: 'ts-loader', exclude: /node_modules/ },
-      { test: /\.css$/, 
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: {
-            loader: 'css-loader',
-            query: {
-              modules: true,
-              sourceMap: false,
-              importLoaders: 1,
-              localIdentName: '[local]__[hash:base64:5]'
-            }
-          }
-      })},
+      { test: /\.css$/, use: ExtractTextPlugin.extract({ fallback:'style-loader', use: 'css-loader' })},
       { test: /\.html$/, loader: 'html-loader' }
     ]
   },

@@ -1,5 +1,5 @@
 import { IController, INgModelController, IComponentOptions }  from 'angular';
-import * as styles from './dimension.css';
+// import './dimension.css';
 
 interface State {
   value: string;
@@ -7,27 +7,26 @@ interface State {
 }
 
 export class DimensionController implements IController {
-  
-  private defaultOptions = ['auto', 'px', '%'];
-  private options: string[];
+
+  static $inject: ['dropdown'];
   private state: State;
   private ngModelCtrl: INgModelController;
   private menuItems: string[];
 
+  
   $onInit() {
     this.ngModelCtrl.$render = this.onPropsChange;
-    this.resetOptions();
+    this.menuItems = this.menuItems || ['px', '%'];
   }
 
 
   private onPropsChange = () => {
-    const state = this.parseState(this.ngModelCtrl.$viewValue);
-    this.setState(state);
+    this.state = this.parseState(this.ngModelCtrl.$viewValue);
   }
 
-
-  private onSelectChange() {
-    const { value, prefix } = this.state;
+  private onSelectChange(prefix) {
+    const { value } = this.state;
+    this.state.prefix = prefix;
 
     switch(prefix) {
       case 'auto':
@@ -76,8 +75,7 @@ export class DimensionController implements IController {
   private renderState(val?:string) {
 
     if (!!val) {
-      const state = this.parseState(val);
-      this.setState(state);
+      this.state = this.parseState(val);
     }
 
     const { value, prefix } = this.state;
@@ -85,17 +83,6 @@ export class DimensionController implements IController {
     this.ngModelCtrl.$setViewValue(output);
   }
 
-
-  private setState ({value, prefix}:State) {
-    this.resetOptions();
-    if (!this.options.includes(prefix)) this.options.push(prefix);
-    this.state = { value, prefix };
-  }
-
-
-  private resetOptions = () => {
-    this.options = !this.menuItems ? [...this.defaultOptions] : [...this.menuItems];
-  }
 
 }
 
@@ -105,27 +92,28 @@ export const dimension:IComponentOptions = {
     menuItems: '<'
   },
   require: { ngModelCtrl: 'ngModel' },
-  controller: DimensionController,
+  controller:  DimensionController,
   controllerAs: 'vm',
   template: `
-    <div class="${styles.dimension}">
-      <input 
-        type="text" 
-        data-ng-model="vm.state.value" 
-        data-ng-change="vm.onInputChange()"
-        data-ng-value="vm.state.value"
-      />
-      <select 
-        data-ng-model="vm.state.prefix"
-        data-ng-change="vm.onSelectChange()"
-      >
-        <option 
-          value="{{opt}}"
-          data-ng-repeat="opt in vm.options" 
-        >
-          {{opt}}
-        </option>
-      </select>
+    <div class="row">
+      <div class="input-group col-lg-1">
+        <input class="form-control text-right"
+          type="text" 
+          data-ng-model="vm.state.value" 
+          data-ng-change="vm.onInputChange()"
+          data-ng-value="vm.state.value"
+        />
+        <span class="input-group-addon" uib-dropdown is-open="false">
+          <span uib-dropdown-toggle>
+            {{vm.state.prefix}}
+          </span>
+          <ul class="dropdown-menu" uib-dropdown-menu>
+            <li data-ng-repeat="item in vm.menuItems">
+              <a data-ng-click="vm.onSelectChange(item)">{{item}}</a>
+            </li>
+          </ul>
+        </span>
+      </div>
     </div>
   `
 };

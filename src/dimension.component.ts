@@ -60,14 +60,14 @@ export class DimensionController implements IController {
     return !isNaN(Number(num)) && lenUnits.includes(suf);
   }
 
-  private parseState(value:string):State {
+  private parseState(val:string):State {
 
-    const v = '' + parseFloat(value);
-    const p = value.split(/\d|[.]/i).pop().trim();
-    const isValid = this.isValid(value);
+    const num = val.replace(/\D*$/,'');
+    const prefix = val.replace(/[0-9.-]/g, '');
+    const isValid = this.isValid(val);
 
-    if (value == 'auto') return { value, prefix: '-' };
-    if (isValid) return { value: v, prefix: p };
+    if (val == 'auto') return { value: 'auto', prefix: '-' };
+    if (isValid) return { value: num, prefix };
     return { value: '0', prefix: 'px' };
   }
 

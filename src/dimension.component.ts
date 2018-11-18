@@ -1,5 +1,5 @@
 import { IController, INgModelController, IComponentOptions }  from 'angular';
-// import './dimension.css';
+import './dimension.css';
 
 interface State {
   value: string;
@@ -83,7 +83,6 @@ export class DimensionController implements IController {
     this.ngModelCtrl.$setViewValue(output);
   }
 
-
 }
 
 
@@ -95,19 +94,31 @@ export const dimension:IComponentOptions = {
   controller:  DimensionController,
   controllerAs: 'vm',
   template: `
-    <div class="row">
-      <div class="input-group col-lg-1">
+    <div class="dimension" ng-class="{ active: vm.active }">
+      <div class="input-group">
         <input class="form-control text-right"
           type="text" 
           data-ng-model="vm.state.value" 
           data-ng-change="vm.onInputChange()"
+          data-ng-focus="vm.active = true"
+          data-ng-blur="vm.active = false"
           data-ng-value="vm.state.value"
         />
-        <span class="input-group-addon" uib-dropdown is-open="false">
-          <span uib-dropdown-toggle>
+        <span class="input-group-addon" 
+          data-on-toggle="vm.active = vm.isopen"
+          data-is-open="vm.isopen"
+          uib-dropdown 
+          uib-dropdown-toggle
+        >
+          <span class="" >
             {{vm.state.prefix}}
           </span>
-          <ul class="dropdown-menu" uib-dropdown-menu>
+          <ul class="dropdown-menu" 
+            aria-haspopup="true" 
+            aria-expanded="true"
+            uib-dropdown-menu
+            is-open="vm.isopen"
+          >
             <li data-ng-repeat="item in vm.menuItems">
               <a data-ng-click="vm.onSelectChange(item)">{{item}}</a>
             </li>

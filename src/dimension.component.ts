@@ -47,27 +47,29 @@ export class DimensionController implements IController {
   }
 
 
-  private isValid(value: string): boolean {
+  private isValid(val: string): boolean {
 
-    if(!value) return false;
+    if(!val) return false;
     const lenUnits = ['%', 'px', 'cm', 'mm', 'in', 'pc', 'pt', 'ch', 'em', 'ex', 'rem', 'vh', 
       'vw', 'vmin', 'vmax'];
 
-    const num = value.replace(/\D*$/,'');
-    const suf = value.replace(/[0-9.-]/g, '');
+    const value = val.replace(/\D*$/,'');
+    const prefix = val.replace(/[0-9.-]/g, '');
 
-    if (suf == 'auto') return true;
-    return !isNaN(Number(num)) && lenUnits.includes(suf);
+    if (prefix == 'auto') return true;
+    return !isNaN(Number(value)) && lenUnits.includes(prefix);
   }
 
   private parseState(val:string):State {
 
-    const num = val.replace(/\D*$/,'');
+    if(!val) return { value: '0', prefix: 'px' };
+    
+    const value = val.replace(/\D*$/,'');
     const prefix = val.replace(/[0-9.-]/g, '');
     const isValid = this.isValid(val);
 
     if (val == 'auto') return { value: 'auto', prefix: '-' };
-    if (isValid) return { value: num, prefix };
+    if (isValid) return { value, prefix };
     return { value: '0', prefix: 'px' };
   }
 

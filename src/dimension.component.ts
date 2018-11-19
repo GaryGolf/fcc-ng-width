@@ -3,7 +3,7 @@ import './dimension.css';
 
 interface State {
   value: string;
-  prefix: string;
+  unit: string;
 }
 
 export class DimensionController implements IController {
@@ -24,26 +24,26 @@ export class DimensionController implements IController {
     this.state = this.parseState(this.ngModelCtrl.$viewValue);
   }
 
-  private onSelectChange(prefix) {
+  private onSelectChange(unit) {
     const { value } = this.state;
-    this.state.prefix = prefix;
+    this.state.unit = unit;
 
-    switch(prefix) {
+    switch(unit) {
       case 'auto':
         this.renderState('auto');
         break;
       default: 
-        const val = value != 'auto' ? value + prefix : '0' + prefix;
+        const val = value != 'auto' ? value + unit : '0' + unit;
         this.renderState(val);
     }
   }
 
 
   private onInputChange() {
-    const { value, prefix } = this.state;
+    const { value, unit } = this.state;
 
     if (this.isValid(value)) this.renderState(value);
-    else if(this.isValid(value + prefix)) this.renderState();
+    else if(this.isValid(value + unit)) this.renderState();
   }
 
 
@@ -54,23 +54,23 @@ export class DimensionController implements IController {
       'vw', 'vmin', 'vmax'];
 
     const value = val.replace(/\D*$/,'');
-    const prefix = val.replace(/[0-9.-]/g, '');
+    const unit = val.replace(/[0-9.-]/g, '');
 
-    if (prefix == 'auto') return true;
-    return !isNaN(Number(value)) && lenUnits.includes(prefix);
+    if (unit == 'auto') return true;
+    return !isNaN(Number(value)) && lenUnits.includes(unit);
   }
 
   private parseState(val:string):State {
 
-    if(!val) return { value: '0', prefix: 'px' };
+    if(!val) return { value: '0', unit: 'px' };
     
     const value = val.replace(/\D*$/,'');
-    const prefix = val.replace(/[0-9.-]/g, '');
+    const unit = val.replace(/[0-9.-]/g, '');
     const isValid = this.isValid(val);
 
-    if (val == 'auto') return { value: 'auto', prefix: '-' };
-    if (isValid) return { value, prefix };
-    return { value: '0', prefix: 'px' };
+    if (val == 'auto') return { value: 'auto', unit: '-' };
+    if (isValid) return { value, unit };
+    return { value: '0', unit: 'px' };
   }
 
 
@@ -80,8 +80,8 @@ export class DimensionController implements IController {
       this.state = this.parseState(val);
     }
 
-    const { value, prefix } = this.state;
-    const output = prefix != '-' ? value + prefix : value;
+    const { value, unit } = this.state;
+    const output = unit != '-' ? value + unit : value;
     this.ngModelCtrl.$setViewValue(output);
   }
 
@@ -113,7 +113,7 @@ export const dimension:IComponentOptions = {
           uib-dropdown-toggle
         >
           <span class="" >
-            {{vm.state.prefix}}
+            {{vm.state.unit}}
           </span>
           <ul class="dropdown-menu" 
             aria-haspopup="true" 

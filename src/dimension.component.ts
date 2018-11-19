@@ -24,15 +24,14 @@ export class DimensionController implements IController {
     this.state = this.parseState(this.ngModelCtrl.$viewValue);
   }
 
-  private onSelectChange(val:string) {
+  private onSelectChange(unit:string) {
 
     const { lengthValue } = this.state;
-    let value = lengthValue + val;
+    let value = lengthValue + unit;
 
-    if (val == 'auto') value = 'auto';
-    else if(lengthValue == 'auto') value = '0' + val;
+    if (unit == 'auto') value = 'auto';
+    else if(lengthValue == 'auto') value = '0' + unit;
     this.renderState(value);
-
   }
 
 

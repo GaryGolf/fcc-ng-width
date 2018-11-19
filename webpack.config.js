@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 
 const devConfig = {
@@ -19,7 +18,7 @@ const devConfig = {
   module: {
     rules: [
       { test: /\.ts$/, loader: 'ts-loader', exclude: /node_modules/ },
-      { test: /\.css$/, use: ExtractTextPlugin.extract({ fallback:'style-loader', use: 'css-loader' })},
+      { test: /\.css$/, use: ['style-loader', 'css-loader']},
       { test: /\.html$/, loader: 'html-loader' }
     ]
   },
@@ -28,7 +27,6 @@ const devConfig = {
   },
   externals: { 'angular': 'angular' },
   plugins: [
-    new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({ template: path.resolve(__dirname, './template.html') }),
     new HtmlWebpackExternalsPlugin({ externals: [{ module: 'angular', entry: 'angular.js' }] })
   ]

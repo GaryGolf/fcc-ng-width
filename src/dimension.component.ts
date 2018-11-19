@@ -84,7 +84,7 @@ export class DimensionController implements IController {
 }
 
 
-export const dimension:IComponentOptions = {
+export const DimensionComponent:IComponentOptions = {
   bindings: {
     menuItems: '<'
   },

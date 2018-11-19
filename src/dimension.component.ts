@@ -2,8 +2,8 @@ import { IController, INgModelController, IComponentOptions }  from 'angular';
 import './dimension.css';
 
 interface State {
-  lengthValue: string;
-  unitLiteral: string;
+  value: string;
+  unit: string;
 }
 
 export class DimensionController implements IController {
@@ -21,23 +21,23 @@ export class DimensionController implements IController {
     this.menuItems = this.menuItems || ['px', '%'];
   }
 
-  
+
   private onSelectChange(unit:string) {
 
-    const { lengthValue } = this.state;
-    let value = lengthValue + unit;
+    const { value } = this.state;
+    let val = value + unit;
 
-    if (unit == 'auto') value = 'auto';
-    else if(lengthValue == 'auto') value = '0' + unit;
-    this.renderState(value);
+    if (unit == 'auto') val = 'auto';
+    else if(value == 'auto') val = '0' + unit;
+    this.renderState(val);
   }
 
 
   private onInputChange() {
-    const { lengthValue, unitLiteral } = this.state;
+    const { value, unit } = this.state;
 
-    if (this.isValid(lengthValue)) this.renderState(lengthValue);
-    else if(this.isValid(lengthValue + unitLiteral)) this.renderState();
+    if (this.isValid(value)) this.renderState(value);
+    else if(this.isValid(value + unit)) this.renderState();
   }
 
 
@@ -48,23 +48,23 @@ export class DimensionController implements IController {
       'vw', 'vmin', 'vmax'];
 
     const value = val.replace(/\D*$/,'');
-    const unitLiteral = val.replace(/[0-9.-]/g, '');
+    const unit = val.replace(/[0-9.-]/g, '');
 
-    if (unitLiteral == 'auto') return true;
-    return !isNaN(Number(value)) && lenUnits.includes(unitLiteral);
+    if (unit == 'auto') return true;
+    return !isNaN(Number(value)) && lenUnits.includes(unit);
   }
 
   private parseState(val:string):State {
 
-    if(!val) return { lengthValue: '0', unitLiteral: 'px' };
+    if(!val) return { value: '0', unit: 'px' };
     
-    const lengthValue = val.replace(/\D*$/,'');
-    const unitLiteral = val.replace(/[0-9.-]/g, '');
+    const value = val.replace(/\D*$/,'');
+    const unit = val.replace(/[0-9.-]/g, '');
     const isValid = this.isValid(val);
 
-    if (val == 'auto') return { lengthValue: 'auto', unitLiteral: '-' };
-    if (isValid) return { lengthValue, unitLiteral };
-    return { lengthValue: '0', unitLiteral: 'px' };
+    if (val == 'auto') return { value: 'auto', unit: '-' };
+    if (isValid) return { value, unit };
+    return { value: '0', unit: 'px' };
   }
 
 
@@ -74,8 +74,8 @@ export class DimensionController implements IController {
       this.state = this.parseState(val);
     }
 
-    const { lengthValue, unitLiteral } = this.state;
-    const output = unitLiteral != '-' ? lengthValue + unitLiteral : lengthValue;
+    const { value, unit } = this.state;
+    const output = unit != '-' ? value + unit : value;
     this.ngModelCtrl.$setViewValue(output);
   }
 
@@ -93,11 +93,11 @@ export const DimensionComponent:IComponentOptions = {
       <div class="input-group">
         <input class="form-control text-right"
           type="text" 
-          data-ng-model="$ctrl.state.lengthValue" 
+          data-ng-model="$ctrl.state.value" 
           data-ng-change="$ctrl.onInputChange()"
           data-ng-focus="$ctrl.active = true"
           data-ng-blur="$ctrl.active = false"
-          data-ng-value="$ctrl.state.lengthValue"
+          data-ng-value="$ctrl.state.value"
         />
         <span class="input-group-addon" 
           data-on-toggle="$ctrl.active = $ctrl.isopen"
@@ -106,7 +106,7 @@ export const DimensionComponent:IComponentOptions = {
           uib-dropdown-toggle
         >
           <span class="" >
-            {{$ctrl.state.unitLiteral}}
+            {{$ctrl.state.unit}}
           </span>
           <ul class="dropdown-menu" 
             aria-haspopup="true" 

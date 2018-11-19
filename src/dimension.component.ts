@@ -15,15 +15,13 @@ export class DimensionController implements IController {
 
   
   $onInit() {
-    this.ngModelCtrl.$render = this.onPropsChange;
+    this.ngModelCtrl.$render = () => {
+      this.state = this.parseState(this.ngModelCtrl.$viewValue);
+    }
     this.menuItems = this.menuItems || ['px', '%'];
   }
 
-
-  private onPropsChange = () => {
-    this.state = this.parseState(this.ngModelCtrl.$viewValue);
-  }
-
+  
   private onSelectChange(unit:string) {
 
     const { lengthValue } = this.state;

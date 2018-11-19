@@ -90,35 +90,34 @@ export const dimension:IComponentOptions = {
   },
   require: { ngModelCtrl: 'ngModel' },
   controller:  DimensionController,
-  controllerAs: 'vm',
   template: `
-    <div class="dimension" ng-class="{ active: vm.active }">
+    <div class="dimension" ng-class="{ active: $ctrl.active }">
       <div class="input-group">
         <input class="form-control text-right"
           type="text" 
-          data-ng-model="vm.state.lengthValue" 
-          data-ng-change="vm.onInputChange()"
-          data-ng-focus="vm.active = true"
-          data-ng-blur="vm.active = false"
-          data-ng-value="vm.state.lengthValue"
+          data-ng-model="$ctrl.state.lengthValue" 
+          data-ng-change="$ctrl.onInputChange()"
+          data-ng-focus="$ctrl.active = true"
+          data-ng-blur="$ctrl.active = false"
+          data-ng-value="$ctrl.state.lengthValue"
         />
         <span class="input-group-addon" 
-          data-on-toggle="vm.active = vm.isopen"
-          data-is-open="vm.isopen"
+          data-on-toggle="$ctrl.active = $ctrl.isopen"
+          data-is-open="$ctrl.isopen"
           uib-dropdown 
           uib-dropdown-toggle
         >
           <span class="" >
-            {{vm.state.unitLiteral}}
+            {{$ctrl.state.unitLiteral}}
           </span>
           <ul class="dropdown-menu" 
             aria-haspopup="true" 
             aria-expanded="true"
             uib-dropdown-menu
-            is-open="vm.isopen"
+            is-open="$ctrl.isopen"
           >
-            <li data-ng-repeat="item in vm.menuItems">
-              <a data-ng-click="vm.onSelectChange(item)">{{item}}</a>
+            <li data-ng-repeat="item in $ctrl.menuItems">
+              <a data-ng-click="$ctrl.onSelectChange(item)">{{item}}</a>
             </li>
           </ul>
         </span>

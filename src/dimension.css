@@ -1,6 +1,5 @@
 .dimension {
-
-width: 13rem;
+  width: 11rem;
 }
 
 .dimension.active {
@@ -20,6 +19,6 @@ width: 13rem;
   border-left-color: #ccc;
 }
 
-.form-control:focus {
+.dimension .form-control:focus {
   box-shadow: none;
 }

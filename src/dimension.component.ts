@@ -8,7 +8,6 @@ interface State {
 
 export class DimensionController implements IController {
 
-  static $inject: ['dropdown'];
   private state: State;
   private ngModelCtrl: INgModelController;
   private menuItems: string[];

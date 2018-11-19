@@ -14,7 +14,7 @@ export const AppModule:angular.IModule = angular.module('app', [dropdown])
       <input type="text" data-ng-model="vm.value" />
       <hr/>
       <dimension 
-        data-menu-items="['px', '%', 'em', 'rem']"
+        data-menu-items="['auto', 'px', '%', 'em', 'rem']"
         data-ng-model="vm.value"
       ></dimension>
       </div>

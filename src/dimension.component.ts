@@ -1,4 +1,4 @@
-import { IController, INgModelController, IComponentOptions }  from 'angular';
+import { IDocumentService, IController, INgModelController, IComponentOptions }  from 'angular';
 import './dimension.css';
 
 interface State {
@@ -11,6 +11,14 @@ export class DimensionController implements IController {
   private state: State;
   private ngModelCtrl: INgModelController;
   private menuItems: string[];
+  private isFocused: boolean;
+  private active: boolean = false;
+
+  static $inject = ['$document'];
+
+  constructor(private $document: IDocumentService) {
+    this.onKeyDown = this.onKeyDown.bind(this);
+  }
 
   
   $onInit() {
@@ -78,6 +86,33 @@ export class DimensionController implements IController {
     this.ngModelCtrl.$setViewValue(output);
   }
 
+  private onFocus() {
+    this.active = true;
+    this.$document.on('keydown', this.onKeyDown);
+  }
+
+  private onBlur() {
+    this.active = false;
+    this.$document.off('keydown', this.onKeyDown);
+  }
+
+  private onKeyDown(event:JQueryKeyEventObject) {
+    switch (event.key) {
+      case 'ArrowUp': {
+        const v = parseFloat(this.state.value)
+        if (!isNaN(v)) this.state.value = String(v+1);
+        this.renderState();
+        break;
+      }
+      case 'ArrowDown': {
+        const v = parseFloat(this.state.value)
+        if (!isNaN(v)) this.state.value = String(v-1);
+        this.renderState();
+        break;
+      }
+    }
+  }
+
 }
 
 
@@ -94,8 +129,8 @@ export const DimensionComponent:IComponentOptions = {
           type="text" 
           data-ng-model="$ctrl.state.value" 
           data-ng-change="$ctrl.onInputChange()"
-          data-ng-focus="$ctrl.active = true"
-          data-ng-blur="$ctrl.active = false"
+          data-ng-focus="$ctrl.onFocus()"
+          data-ng-blur="$ctrl.onBlur()"
           data-ng-value="$ctrl.state.value"
         />
         <span class="input-group-addon" 

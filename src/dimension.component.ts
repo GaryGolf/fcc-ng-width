@@ -115,6 +115,8 @@ export class DimensionController implements IController {
 
 }
 
+// --
+
 
 export const DimensionComponent:IComponentOptions = {
   bindings: {

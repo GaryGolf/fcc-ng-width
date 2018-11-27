@@ -11,7 +11,6 @@ export class DimensionController implements IController {
   private state: State;
   private ngModelCtrl: INgModelController;
   private menuItems: string[];
-  private isFocused: boolean;
   private active: boolean = false;
 
   static $inject = ['$document'];

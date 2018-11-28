@@ -1,4 +1,4 @@
-import { IDocumentService, IController, INgModelController, IComponentOptions }  from 'angular';
+import { IDocumentService, IController, INgModelController, IComponentOptions, IAugmentedJQuery } from 'angular';
 import './dimension.css';
 
 interface State {
@@ -13,14 +13,15 @@ export class DimensionController implements IController {
   private menuItems: string[];
   private active: boolean = false;
 
-  static $inject = ['$document'];
+  static $inject = ['$document', '$element'];
 
-  constructor(private $document: IDocumentService) {
+  constructor(private $document: IDocumentService, private $element: IAugmentedJQuery) {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
-  
+
   $onInit() {
+    this.$element.addClass('');
     this.ngModelCtrl.$render = () => {
       this.state = this.parseState(this.ngModelCtrl.$viewValue);
     }
@@ -28,13 +29,13 @@ export class DimensionController implements IController {
   }
 
 
-  private onSelectChange(unit:string) {
+  private onSelectChange(unit: string) {
 
     const { value } = this.state;
     let val = value + unit;
 
     if (unit == 'auto') val = 'auto';
-    else if(value == 'auto') val = '0' + unit;
+    else if (value == 'auto') val = '0' + unit;
     this.renderState(val);
   }
 
@@ -43,28 +44,28 @@ export class DimensionController implements IController {
     const { value, unit } = this.state;
 
     if (this.isValid(value)) this.renderState(value);
-    else if(this.isValid(value + unit)) this.renderState();
+    else if (this.isValid(value + unit)) this.renderState();
   }
 
 
   private isValid(val: string): boolean {
 
-    if(!val) return false;
-    const lenUnits = ['%', 'px', 'cm', 'mm', 'in', 'pc', 'pt', 'ch', 'em', 'ex', 'rem', 'vh', 
+    if (!val) return false;
+    const lenUnits = ['%', 'px', 'cm', 'mm', 'in', 'pc', 'pt', 'ch', 'em', 'ex', 'rem', 'vh',
       'vw', 'vmin', 'vmax'];
 
-    const value = val.replace(/\D*$/,'');
+    const value = val.replace(/\D*$/, '');
     const unit = val.replace(/[0-9.-]/g, '');
 
     if (unit == 'auto') return true;
     return !isNaN(Number(value)) && lenUnits.includes(unit);
   }
 
-  private parseState(val:string):State {
+  private parseState(val: string): State {
 
-    if(!val) return { value: '0', unit: 'px' };
-    
-    const value = val.replace(/\D*$/,'');
+    if (!val) return { value: '0', unit: 'px' };
+
+    const value = val.replace(/\D*$/, '');
     const unit = val.replace(/[0-9.-]/g, '');
     const isValid = this.isValid(val);
 
@@ -74,7 +75,7 @@ export class DimensionController implements IController {
   }
 
 
-  private renderState(val?:string) {
+  private renderState(val?: string) {
 
     if (!!val) {
       this.state = this.parseState(val);
@@ -95,17 +96,17 @@ export class DimensionController implements IController {
     this.$document.off('keydown', this.onKeyDown);
   }
 
-  private onKeyDown(event:JQueryKeyEventObject) {
+  private onKeyDown(event: JQueryKeyEventObject) {
     switch (event.key) {
       case 'ArrowUp': {
         const v = parseFloat(this.state.value)
-        if (!isNaN(v)) this.state.value = String(v+1);
+        if (!isNaN(v)) this.state.value = String(v + 1);
         this.renderState();
         break;
       }
       case 'ArrowDown': {
         const v = parseFloat(this.state.value)
-        if (!isNaN(v)) this.state.value = String(v-1);
+        if (!isNaN(v)) this.state.value = String(v - 1);
         this.renderState();
         break;
       }
@@ -114,12 +115,12 @@ export class DimensionController implements IController {
 
 }
 
-export const DimensionComponent:IComponentOptions = {
+export const DimensionComponent: IComponentOptions = {
   bindings: {
     menuItems: '<'
   },
   require: { ngModelCtrl: 'ngModel' },
-  controller:  DimensionController,
+  controller: DimensionController,
   template: `
     <div class="dimension" ng-class="{ active: $ctrl.active }">
       <div class="input-group">

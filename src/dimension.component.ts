@@ -1,4 +1,4 @@
-import { IDocumentService, IController, INgModelController, IComponentOptions, IAugmentedJQuery } from 'angular';
+import { IDocumentService, IController, INgModelController, IComponentOptions } from 'angular';
 import './dimension.css';
 
 interface State {
@@ -13,15 +13,14 @@ export class DimensionController implements IController {
   private menuItems: string[];
   private active: boolean = false;
 
-  static $inject = ['$document', '$element'];
+  static $inject = ['$document'];
 
-  constructor(private $document: IDocumentService, private $element: IAugmentedJQuery) {
+  constructor(private $document: IDocumentService) {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
 
   $onInit() {
-    this.$element.addClass('');
     this.ngModelCtrl.$render = () => {
       this.state = this.parseState(this.ngModelCtrl.$viewValue);
     }

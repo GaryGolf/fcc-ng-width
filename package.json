@@ -4,11 +4,11 @@
   "description": "test ng component",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --hot",
     "start": "npm run dev",
     "build": "webpack",
-    "cypress:open": "cypress open"
+    "test": "cypress run --spec 'cypress/integration/dimension.spec.js'",
+    "cyp": "cypress open --port 8080"
   },
   "repository": {
     "type": "git",

@@ -12,6 +12,15 @@ context('General', () => {
       .should('have.value', 'auto')
   });
 
+  it('input could have 100% value', () => {
+    // https://on.cypress.io/type
+    cy.get('.input-group .form-control', { timeout: 2000 })
+      .clear()
+      .focus()
+      .type('100%')
+      .should('have.value', '100')
+  });
+
   it('input could drop down mwnu', () => {
     // https://on.cypress.io/type
     cy.get('.dropdown', { timeout: 2000 })

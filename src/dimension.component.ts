@@ -147,7 +147,7 @@ export const DimensionComponent: IComponentOptions = {
             is-open="$ctrl.isopen"
           >
             <li data-ng-repeat="item in $ctrl.menuItems">
-              <a data-ng-click="$ctrl.onSelectChange(item)">{{item}}</a>
+              <a data-ng-click="$ctrl.onSelectChange(item)" data-unit="{{item}}">{{item}}</a>
             </li>
           </ul>
         </span>

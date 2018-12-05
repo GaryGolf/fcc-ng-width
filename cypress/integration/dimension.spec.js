@@ -4,7 +4,6 @@ context('General', () => {
   });
 
   it('input could have auto value', () => {
-    // https://on.cypress.io/type
     cy.get('.input-group .form-control', { timeout: 2000 })
       .clear()
       .focus()
@@ -13,19 +12,33 @@ context('General', () => {
   });
 
   it('input could have 100% value', () => {
-    // https://on.cypress.io/type
     cy.get('.input-group .form-control', { timeout: 2000 })
       .clear()
       .focus()
       .type('100%')
-      .should('have.value', '100')
+      .get('#control', { timeout: 2000 })
+      .focus()
+      .should('have.value', '100%')
   });
 
   it('input could drop down mwnu', () => {
-    // https://on.cypress.io/type
     cy.get('.dropdown', { timeout: 2000 })
       .click()
       .should('have.class', 'open')
+  });
+
+  it('select unit change value', () => {
+    cy.get('.input-group .form-control', { timeout: 2000 })
+      .clear()
+      .focus()
+      .type('2%')
+      .get('.dropdown', { timeout: 2000 })
+      .click()
+      .get('[data-unit="rem"]', { timeout: 2000 })
+      .click()
+      .get('#control', { timeout: 2000 })
+      .focus()
+      .should('have.value', '2rem')
   });
 
 })

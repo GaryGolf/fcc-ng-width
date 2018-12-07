@@ -1,22 +1,25 @@
+
 .dimension {
   width: 11rem;
+  --brand-color: #758FF5;
+  --border-color: #ccc;
 }
 
 .dimension.active {
-  border-color: #66afe9;
+  border-color: var(--brand-color);
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
 }
 
 .dimension.active  .form-control {
-  border-color: #66afe9;
-  border-right-color: #ccc;
+  border-color: var(--brand-color);
+  border-right-color: var(--border-color);
 }
 
 .dimension.active  .input-group-addon {
-  border-color: #66afe9;
-  border-left-color: #ccc;
+  border-color: var(--brand-color);
+  border-left-color: var(--border-color);
 }
 
 .dimension .form-control:focus {
